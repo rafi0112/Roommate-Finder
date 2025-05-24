@@ -29,7 +29,7 @@ const GroupDetailsID = () => {
     setIsSubmitting(true);
     
     try {
-        const response = await fetch(`http://localhost:3000/roommate/${id}`, {
+        const response = await fetch(`https://roommate-server-lime.vercel.app/roommate/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

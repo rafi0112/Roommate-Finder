@@ -19,12 +19,12 @@ export const router = createBrowserRouter([
         children:[
             {
                 index: true, 
-                loader: ()=>fetch("http://localhost:3000/roommate"),
+                loader: ()=>fetch("https://roommate-server-lime.vercel.app/roommate"),
                 element: <Home />,
             },
             {
                 path: "/browse-listings",
-                loader: ()=>fetch("http://localhost:3000/roommate"),
+                loader: ()=>fetch("https://roommate-server-lime.vercel.app/roommate"),
                 element: <BrowseListings /> 
             },
             {
@@ -34,17 +34,17 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/my-listings",
-                loader: ()=>fetch("http://localhost:3000/roommate"),
+                loader: ()=>fetch("https://roommate-server-lime.vercel.app/roommate"),
                 element: <PrivateRoute><MyListings /></PrivateRoute>  
             },
             {
                 path: "/listings/:id",
-                loader: ()=>fetch("http://localhost:3000/roommate"),
+                loader: ()=>fetch("https://roommate-server-lime.vercel.app/roommate"),
                 element: <PrivateRoute><GroupDetailsID /></PrivateRoute>  
             },
             {
                 path: "/edit-listing/:id",
-                loader: ({params})=>fetch(`http://localhost:3000/roommate/${params.id}`),
+                loader: ({params})=>fetch(`https://roommate-server-lime.vercel.app/roommate/${params.id}`),
                 element: <PrivateRoute><UpdatePost /></PrivateRoute>  
             },
             {

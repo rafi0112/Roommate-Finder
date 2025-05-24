@@ -87,7 +87,7 @@ const AddRoommateListing = () => {
       // });
       console.log(formData)
       //post data
-    fetch("http://localhost:3000/roommate",{
+    fetch("https://roommate-server-lime.vercel.app/roommate",{
         method: 'POST',
         headers: {
             'content-type': 'application/json'

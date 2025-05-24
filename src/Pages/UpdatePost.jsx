@@ -55,7 +55,7 @@ const UpdatePost = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    fetch(`http://localhost:3000/roommate/${_id}`, {
+    fetch(`https://roommate-server-lime.vercel.app/roommate/${_id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"

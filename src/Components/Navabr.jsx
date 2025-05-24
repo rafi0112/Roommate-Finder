@@ -25,8 +25,8 @@ const Navbar = () => {
   const links = [
     { path: "/", label: "Home", icon: <FiHome className="mr-2" />, private: false },
     { path: "/browse-listings", label: "Browse", icon: <FiSearch className="mr-2" />, private: false },
-    { path: "/add-listing", label: "Add Listing", icon: <FiPlus className="mr-2" />, private: true },
-    { path: "/my-listings", label: "My Listings", icon: <FiList className="mr-2" />, private: true }
+    { path: "/add-listing", label: "Add Listing", icon: <FiPlus className="mr-2" />, private: false },
+    { path: "/my-listings", label: "My Listings", icon: <FiList className="mr-2" />, private: false }
   ];
 
   // Dynamic colors based on theme

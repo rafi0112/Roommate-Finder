@@ -24,7 +24,7 @@ const MyListings = () => {
     // Optimistically update the UI first
     setListings(prevListings => prevListings.filter(listing => listing._id !== id));
 
-    fetch(`http://localhost:3000/roommate/${id}`, {
+    fetch(`https://roommate-server-lime.vercel.app/roommate/${id}`, {
       method: 'DELETE'
     })
     .then(res => {
