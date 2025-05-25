@@ -61,7 +61,7 @@ const BrowseListings = () => {
     const matchesRoomType = filters.roomType === "all" || 
                            listing.roomType.toLowerCase() === filters.roomType.toLowerCase();
     
-    const matchesRent = listing.rent <= filters.maxRent;
+    const matchesRent = listing.rent <= filters.maxRent ;
     
     const matchesAvailability = filters.availability === "all" || 
                                listing.availability.toLowerCase().includes(filters.availability.toLowerCase());
