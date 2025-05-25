@@ -7,11 +7,13 @@ import { Fade } from "react-awesome-reveal";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { useTheme } from "../contexts/ThemeContext";
 
 const Home = () => {
   const [featuredRoommates, setFeaturedRoommates] = useState([]);
   const [loading, setLoading] = useState(true);
   const allRoommates = useLoaderData();
+  const {theme} = useTheme();
 
   useEffect(() => {
   const timer = setTimeout(() => {
@@ -47,7 +49,7 @@ const Home = () => {
 
 
   return (
-    <div className="min-h-screen">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900' }`}>
       {/* Banner Slider */}
           <section className="mb-12">
       <Swiper
@@ -112,7 +114,7 @@ const Home = () => {
       {/* Featured Roommates Section */}
       <section className="container mx-auto px-4 mb-16">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800">Featured Roommates</h2>
+          <h2 className={`text-3xl font-bold ${theme ==='dark'? 'text-gray-100' : 'text-gray-800'} `}>Featured Roommates</h2>
           <Link to="/browse-listings" className="text-blue-600 hover:text-blue-800 font-medium">View All →</Link>
         </div>
 
@@ -235,7 +237,7 @@ const Home = () => {
 
       {/* Testimonials Section */}
       <section className="container mx-auto px-4 mb-16">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Success Stories</h2>
+        <h2 className={`text-3xl font-bold text-center mb-12 ${theme === 'dark' ? 'text-gray-100 ' : 'text-gray-800 '} `}>Success Stories</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           <div className="bg-white p-6 rounded-lg shadow-md relative">
             <div className="absolute -top-4 -left-4 text-6xl text-gray-200">"</div>
