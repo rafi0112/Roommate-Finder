@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/AuthContext";
 import Swal from 'sweetalert2';
+import { useTheme } from "../contexts/ThemeContext";
 
 const Register = () => {
     const [formData, setFormData] = useState({ 
@@ -14,6 +15,7 @@ const Register = () => {
     const [passwordError, setPasswordError] = useState("");
     const navigate = useNavigate();
     const { createUser, setCurrentUser, signInGoogle } = useContext(AuthContext);
+    const { theme } = useTheme();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -114,63 +116,63 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-            <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
+        <div className={`min-h-screen flex items-center justify-center p-4 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-blue-50 to-indigo-100'}`}>
+            <div className={`rounded-xl shadow-2xl p-8 w-full max-w-md ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800">Create Account</h1>
-                    <p className="text-gray-600 mt-2">Join us today!</p>
+                    <h1 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>Create Account</h1>
+                    <p className={`text-gray-600 mt-2 ${theme === 'dark' ? 'text-gray-400' : ''}`}>Join us today!</p>
                 </div>
 
                 <form onSubmit={handleRegister} className="space-y-5">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <label className={`block text-sm font-medium mb-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Full Name</label>
                         <input
                             type="text"
                             name="name"
                             placeholder="John Doe"
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                            className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition ${theme === 'dark' ? 'border-gray-700 bg-gray-700 text-white' : 'border-gray-300'}`}
                             onChange={handleChange}
                             required
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <label className={`block text-sm font-medium mb-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Email</label>
                         <input
                             type="email"
                             name="email"
                             placeholder="your@email.com"
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                            className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition ${theme === 'dark' ? 'border-gray-700 bg-gray-700 text-white' : 'border-gray-300'}`}
                             onChange={handleChange}
                             required
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Photo URL (Optional)</label>
+                        <label className={`block text-sm font-medium mb-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Photo URL (Optional)</label>
                         <input
                             type="text"
                             name="photoURL"
                             placeholder="https://example.com/photo.jpg"
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                            className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition ${theme === 'dark' ? 'border-gray-700 bg-gray-700 text-white' : 'border-gray-300'}`}
                             onChange={handleChange}
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <label className={`block text-sm font-medium mb-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Password</label>
                         <input
                             type="password"
                             name="password"
                             placeholder="••••••••"
-                            className={`w-full px-4 py-3 rounded-lg border ${passwordError ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition`}
+                            className={`w-full px-4 py-3 rounded-lg border ${passwordError ? 'border-red-500' : (theme === 'dark' ? 'border-gray-700' : 'border-gray-300')} focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition ${theme === 'dark' ? 'bg-gray-700 text-white' : ''}`}
                             onChange={handleChange}
                             required
                         />
                         {passwordError && (
                             <p className="mt-1 text-sm text-red-600">{passwordError}</p>
                         )}
-                        <div className="mt-2 text-xs text-gray-500">
+                        <div className={`mt-2 text-xs ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
                             <p>Password requirements:</p>
                             <ul className="list-disc list-inside">
                                 <li className={formData.password.length >= 6 ? 'text-green-500' : ''}>At least 6 characters</li>
@@ -189,14 +191,14 @@ const Register = () => {
                 </form>
 
                 <div className="flex items-center my-6">
-                    <div className="flex-grow border-t border-gray-300"></div>
-                    <span className="mx-4 text-gray-500">or</span>
-                    <div className="flex-grow border-t border-gray-300"></div>
+                    <div className={`flex-grow border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}></div>
+                    <span className={`mx-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>or</span>
+                    <div className={`flex-grow border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}></div>
                 </div>
 
                 <button
                     onClick={handleGoogleLogin}
-                    className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 py-3 rounded-lg font-medium border border-gray-300 hover:bg-gray-50 transition duration-300 shadow-sm hover:shadow-md"
+                    className={`w-full flex items-center justify-center gap-3 py-3 rounded-lg font-medium border hover:bg-gray-50 transition duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-700 text-white border-gray-600 hover:bg-gray-600' : 'bg-white text-gray-700 border-gray-300'}`}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -207,7 +209,7 @@ const Register = () => {
                     Sign up with Google
                 </button>
 
-                <p className="text-center text-sm mt-6 text-gray-600">
+                <p className={`text-center text-sm mt-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                     Already have an account?{' '}
                     <NavLink 
                         to="/login" 

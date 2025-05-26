@@ -1,12 +1,15 @@
 import { useContext, useState } from "react";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useNavigate, useLocation } from "react-router";
 import { AuthContext } from "../contexts/AuthContext";
 import Swal from 'sweetalert2';
+import { useTheme } from "../contexts/ThemeContext";
 
 const Login = () => {
     const { signInGoogle, login, setCurrentUser } = useContext(AuthContext);
     const [formData, setFormData] = useState({ email: "", password: "" });
     const navigate = useNavigate();
+    const location = useLocation();
+    const { theme } = useTheme();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -71,35 +74,35 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-            <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md">
+        <div className={`flex flex-col items-center justify-center min-h-screen p-4 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-blue-50 to-indigo-100'}`}>
+            <div className={`p-8 rounded-xl shadow-2xl w-full max-w-md ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
-                    <p className="text-gray-600 mt-2">Sign in to continue</p>
+                    <h2 className={`text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>Welcome Back</h2>
+                    <p className={`mt-2 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Sign in to continue</p>
                 </div>
                 
                 <form onSubmit={handleLogin} className="space-y-6">
                     <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <label htmlFor="email" className={`block text-sm font-medium mb-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Email</label>
                         <input 
                             type="email" 
                             id="email"
                             name="email" 
                             placeholder="your@email.com" 
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                            className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition ${theme === 'dark' ? 'border-gray-700 bg-gray-700 text-white' : 'border-gray-300'}`}
                             onChange={handleChange} 
                             required 
                         />
                     </div>
                     
                     <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <label htmlFor="password" className={`block text-sm font-medium mb-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Password</label>
                         <input 
                             type="password" 
                             id="password"
                             name="password" 
                             placeholder="••••••••" 
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                            className={`w-full px-4 py-3 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition ${theme === 'dark' ? 'border-gray-700 bg-gray-700 text-white' : 'border-gray-300'}`}
                             onChange={handleChange} 
                             required 
                         />
@@ -114,14 +117,14 @@ const Login = () => {
                 </form>
                 
                 <div className="flex items-center my-6">
-                    <div className="flex-grow border-t border-gray-300"></div>
-                    <span className="mx-4 text-gray-500">or</span>
-                    <div className="flex-grow border-t border-gray-300"></div>
+                    <div className={`flex-grow border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}></div>
+                    <span className={`mx-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>or</span>
+                    <div className={`flex-grow border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-300'}`}></div>
                 </div>
                 
                 <button 
                     onClick={handleGoogleLogin} 
-                    className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 py-3 rounded-lg font-medium border border-gray-300 hover:bg-gray-50 transition duration-300 shadow-sm hover:shadow-md"
+                    className={`w-full flex items-center justify-center gap-3 py-3 rounded-lg font-medium border hover:bg-gray-50 transition duration-300 shadow-sm hover:shadow-md ${theme === 'dark' ? 'bg-gray-700 text-white border-gray-600 hover:bg-gray-600' : 'bg-white text-gray-700 border-gray-300'}`}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -132,7 +135,7 @@ const Login = () => {
                     Sign in with Google
                 </button>
                 
-                <p className="text-center text-sm mt-6 text-gray-600">
+                <p className={`text-center text-sm mt-6 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
                     Don't have an account?{' '}
                     <NavLink 
                         to="/register" 
