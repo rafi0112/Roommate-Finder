@@ -27,8 +27,11 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="w-full bg-gradient-to-br from-gray-900 to-gray-800 text-white pt-12 pb-8 px-4 sm:px-8 lg:px-16">
-      <div className="max-w-7xl mx-auto">
+            <footer className={`w-full pt-12 pb-8 px-4 sm:px-8 lg:px-16
+        bg-gradient-to-br from-gray-950 via-blue-950 to-gray-950 text-white
+      `}
+      >     
+        <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           
           {/* Brand Info */}
