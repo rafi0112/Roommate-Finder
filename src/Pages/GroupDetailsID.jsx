@@ -5,12 +5,14 @@ import { useState, useContext } from "react";
 import { FiHome, FiDollarSign, FiUser, FiCalendar, FiInfo, FiMail, FiPhone, FiHeart, FiThumbsUp } from "react-icons/fi";
 import { AuthContext } from "../contexts/AuthContext";
 import Swal from "sweetalert2";
+import { useTheme } from "../contexts/ThemeContext";
 
 const GroupDetailsID = () => {
     const { id } = useParams();
     const listings = useLoaderData();
     const { currentUser } = useContext(AuthContext);
     const listingDetails = listings.find(listing => String(listing._id) === String(id));
+    const { theme } = useTheme();
     
     // State for like functionality
     const [likeCount, setLikeCount] = useState(listingDetails?.likes?.length || 0);
@@ -24,59 +26,57 @@ const GroupDetailsID = () => {
     const isOwner = currentUser?.email === listingDetails?.userEmail;
 
     const handleLike = async () => {
-    if (isOwner || !currentUser) return;
-    
-    setIsSubmitting(true);
-    
-    try {
-        const response = await fetch(`https://roommate-server-lime.vercel.app/roommate/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${currentUser.token}`
-            },
-            body: JSON.stringify({
-                userEmail: currentUser.email,
-                action: hasLiked ? 'unlike' : 'like'
-            })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "Failed to update like status");
-        }
-
-        // Update local state
-        setLikeCount(data.likes.length);
-        setHasLiked(!hasLiked);
-        if (!hasLiked) setContactVisible(true);
+        if (isOwner || !currentUser) return;
         
-        Swal.fire({
-            title: "Success!",
-            text: hasLiked ? "Removed from your interests" : "Added to your interests!",
-            icon: "success",
-            confirmButtonText: "OK"
-        });
-    } catch (error) {
-        console.error("Error updating like:", error);
-        Swal.fire({
-            title: "Error!",
-            text: error.message || "Failed to update like status",
-            icon: "error",
-            confirmButtonText: "OK"
-        });
-    } finally {
-        setIsSubmitting(false);
-    }
-};
+        setIsSubmitting(true);
+        
+        try {
+            const response = await fetch(`https://roommate-server-lime.vercel.app/roommate/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${currentUser.token}`
+                },
+                body: JSON.stringify({
+                    userEmail: currentUser.email,
+                    action: hasLiked ? 'unlike' : 'like'
+                })
+            });
 
+            const data = await response.json();
 
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to update like status");
+            }
+
+            // Update local state
+            setLikeCount(data.likes.length);
+            setHasLiked(!hasLiked);
+            if (!hasLiked) setContactVisible(true);
+            
+            Swal.fire({
+                title: "Success!",
+                text: hasLiked ? "Removed from your interests" : "Added to your interests!",
+                icon: "success",
+                confirmButtonText: "OK"
+            });
+        } catch (error) {
+            console.error("Error updating like:", error);
+            Swal.fire({
+                title: "Error!",
+                text: error.message || "Failed to update like status",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     if (!listingDetails) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-50">
-                <div className="text-center text-red-500 text-xl p-6 bg-white rounded-lg shadow-md">
+            <div className={`flex items-center justify-center min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
+                <div className={`text-center text-red-500 text-xl p-6 rounded-lg shadow-md ${theme === 'dark' ? 'bg-gray-800 text-red-400' : 'bg-white'}`}>
                     Listing not found
                 </div>
             </div>
@@ -94,14 +94,14 @@ const GroupDetailsID = () => {
     ].filter(tag => tag !== "");
 
     return (
-        <div className="min-h-screen bg-gray-50 py-10 px-4">
+        <div className={`min-h-screen py-10 px-4 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
             <MOTION.div 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 className="max-w-4xl mx-auto"
             >
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div className={`rounded-xl shadow-lg overflow-hidden ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
                     {/* Header with image */}
                     <div className="relative h-64 w-full bg-gradient-to-r from-blue-500 to-indigo-600">
                         <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
@@ -116,8 +116,8 @@ const GroupDetailsID = () => {
                         </div>
                         
                         {/* Like count display */}
-                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
-                            <span className="text-sm font-medium text-indigo-700 flex items-center">
+                        <div className={`absolute top-4 left-4 px-3 py-1 rounded-full shadow-sm ${theme === 'dark' ? 'bg-gray-700/90 backdrop-blur-sm' : 'bg-white/90 backdrop-blur-sm'}`}>
+                            <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-200' : 'text-indigo-700'} flex items-center`}>
                                 <FiHeart className="mr-1" />
                                 {likeCount} {likeCount === 1 ? 'person' : 'people'} interested
                             </span>
@@ -135,10 +135,10 @@ const GroupDetailsID = () => {
                                 className="flex items-center"
                             >
                                 <FiHome className="text-indigo-600 text-xl mr-2" />
-                                <div>
-                                    <p className="text-sm text-gray-500">Location</p>
-                                    <p className="font-medium">{listingDetails.location}</p>
-                                </div>
+                                <MOTION.div>
+                                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Location</p>
+                                    <p className={`font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>{listingDetails.location}</p>
+                                </MOTION.div>
                             </MOTION.div>
 
                             <MOTION.div 
@@ -149,8 +149,8 @@ const GroupDetailsID = () => {
                             >
                                 <FiDollarSign className="text-indigo-600 text-xl mr-2" />
                                 <div>
-                                    <p className="text-sm text-gray-500">Rent</p>
-                                    <p className="font-medium">${listingDetails.rentAmount}/month</p>
+                                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Rent</p>
+                                    <p className={`font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>${listingDetails.rentAmount}/month</p>
                                 </div>
                             </MOTION.div>
 
@@ -162,7 +162,7 @@ const GroupDetailsID = () => {
                             >
                                 <FiCalendar className="text-indigo-600 text-xl mr-2" />
                                 <div>
-                                    <p className="text-sm text-gray-500">Availability</p>
+                                    <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Availability</p>
                                     <p className={`font-medium ${
                                         listingDetails.availability === "Available" 
                                             ? "text-green-600" 
@@ -182,13 +182,13 @@ const GroupDetailsID = () => {
                             className="mb-8"
                         >
                             <div className="flex flex-wrap gap-2">
-                                <span className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">
+                                <span className={`px-3 py-1 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-indigo-900 text-indigo-200' : 'bg-indigo-100 text-indigo-800'}`}>
                                     {listingDetails.roomType}
                                 </span>
                                 {lifestyleTags.map((tag, index) => (
                                     <span 
                                         key={index}
-                                        className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium"
+                                        className={`px-3 py-1 rounded-full text-sm font-medium ${theme === 'dark' ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-800'}`}
                                     >
                                         {tag}
                                     </span>
@@ -203,8 +203,8 @@ const GroupDetailsID = () => {
                             transition={{ delay: 0.5 }}
                             className="mb-8"
                         >
-                            <h3 className="text-xl font-semibold text-gray-800 mb-3">Description</h3>
-                            <p className="text-gray-600 leading-relaxed">
+                            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'} mb-3`}>Description</h3>
+                            <p className={`leading-relaxed ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                                 {listingDetails.description || "No description provided."}
                             </p>
                         </MOTION.div>
@@ -214,20 +214,20 @@ const GroupDetailsID = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.6 }}
-                            className="bg-gray-50 p-6 rounded-lg mb-6"
+                            className={`p-6 rounded-lg mb-6 ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}
                         >
-                            <h3 className="text-xl font-semibold text-gray-800 mb-4">Contact Information</h3>
+                            <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'} mb-4`}>Contact Information</h3>
                             <div className="space-y-3">
                                 <div className="flex items-center">
                                     <FiUser className="text-indigo-600 mr-3" />
-                                    <span className="text-gray-700">Posted by: {listingDetails.userEmail || "Not specified"}</span>
+                                    <span className={` ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Posted by: {listingDetails.userEmail || "Not specified"}</span>
                                 </div>
                                 {currentUser && (
                                     <>
                                         {(contactVisible || isOwner) && (
                                             <div className="flex items-center">
                                                 <FiPhone className="text-indigo-600 mr-3" />
-                                                <span className="text-gray-700">Phone: {listingDetails.contactInfo || "Not provided"}</span>
+                                                <span className={` ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Phone: {listingDetails.contactInfo || "Not provided"}</span>
                                             </div>
                                         )}
                                     </>
